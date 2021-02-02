@@ -127,3 +127,11 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+/ETL8
+/ETL1
+test_read.py
+*.dat
+unpack.py
+/katakana
+/hiragana
