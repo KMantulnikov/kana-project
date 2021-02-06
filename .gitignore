@@ -128,8 +128,9 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-/ETL8
+/ETL8B
 /ETL1
+/source
 test_read.py
 *.dat
 unpack.py

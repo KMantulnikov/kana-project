@@ -1,4 +1,4 @@
-
+import os
 import pandas as pd
 import numpy as np
 from PIL import Image
@@ -7,8 +7,16 @@ import matplotlib.pyplot as plt
 
 meta_data = pd.read_csv('./ETL8B/ETL8B2C1.csv')
 meta_data = meta_data[:12000]
-im = Image.open('./ETL8B/ETL8B2C1_00.png')
 # a_hira = meta_data[meta_data['JIS Typical Reading'] == 'A.HI']
+
+images = {
+            'im_00': Image.open('./ETL8B/ETL8B2C1_00.png'),
+            'im_01': Image.open('./ETL8B/ETL8B2C1_01.png'),
+            'im_02': Image.open('./ETL8B/ETL8B2C1_02.png'),
+            'im_03': Image.open('./ETL8B/ETL8B2C1_03.png'),
+            'im_04': Image.open('./ETL8B/ETL8B2C1_04.png'),
+            'im_05': Image.open('./ETL8B/ETL8B2C1_05.png')
+            }
 
 x_0 = []
 y_0 = []
@@ -37,14 +45,30 @@ meta_data['y_1'] = y_1
 
 
 plt.figure('image')
-imgplot = plt.imshow(im)
+imgplot = plt.imshow(images['im_00'])
 plt.scatter(meta_data['x_0'],meta_data['y_0'])
 plt.scatter(meta_data['x_1'],meta_data['y_1'])
 
+    
+for name in np.unique(meta_data['JIS Typical Reading']):
+    name = name.replace('.','_')
+    target_path = os.path.join('source/' + name)
+    if not os.path.exists(target_path):
+        os.makedirs(target_path)
+        print('{0} created'.format(target_path))
+    else:
+        print('Directory already exists.')
+
+
+n = 0
 for index, row in meta_data.iterrows():
+    im = images['im_0{0}'.format(n)]
+    
     print(index, row['JIS Typical Reading'], row['x_0'], row['y_0'], row['x_1'], row['y_1'])
     im_crop = im.crop((row['x_0'], row['y_0'], row['x_1'], row['y_1']))
-    im_crop.save('cropped_images/' + row['JIS Typical Reading'] + '_' + str(index) + '.png')
-
-# plt.figure('image_crop')
-# imgplot = plt.imshow(im_crop)
+    im_crop.save('source/' + (row['JIS Typical Reading']).replace('.','_') + '/' + str(index) + '.png')
+    
+    if index >= 2000 and index % 2000 == 0:
+        print(index)
+        n += 1
+        print('Changing sheet to 0{0}'.format(n))
