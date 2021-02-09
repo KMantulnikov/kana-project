@@ -1,4 +1,5 @@
 import os
+import random
 import pandas as pd
 import numpy as np
 from PIL import Image
@@ -49,24 +50,49 @@ imgplot = plt.imshow(images['im_00'])
 plt.scatter(meta_data['x_0'],meta_data['y_0'])
 plt.scatter(meta_data['x_1'],meta_data['y_1'])
 
+
     
+# for name in np.unique(meta_data['JIS Typical Reading']):
+#     name = name.replace('.','_')
+#     target_path = os.path.join('source/' + name)
+#     if not os.path.exists(target_path):
+#         os.makedirs(target_path)
+#         print('{0} created'.format(target_path))
+#     else:
+#         print('Directory already exists.')
+
 for name in np.unique(meta_data['JIS Typical Reading']):
     name = name.replace('.','_')
-    target_path = os.path.join('source/' + name)
-    if not os.path.exists(target_path):
-        os.makedirs(target_path)
-        print('{0} created'.format(target_path))
+    target_path_training = os.path.join('data/training/' + name)
+    target_path_validation = os.path.join('data/validation/' + name)
+    if not os.path.exists(target_path_training):
+        os.makedirs(target_path_training)
+        print('{0} created'.format(target_path_training))
+    else:
+        print('Directory already exists.')
+        
+    if not os.path.exists(target_path_validation):
+        os.makedirs(target_path_validation)
+        print('{0} created'.format(target_path_validation))
     else:
         print('Directory already exists.')
 
-
+randomlist = np.array(random.sample(range(0, 159), 30))  
 n = 0
 for index, row in meta_data.iterrows():
     im = images['im_0{0}'.format(n)]
     
     print(index, row['JIS Typical Reading'], row['x_0'], row['y_0'], row['x_1'], row['y_1'])
+            
     im_crop = im.crop((row['x_0'], row['y_0'], row['x_1'], row['y_1']))
-    im_crop.save('source/' + (row['JIS Typical Reading']).replace('.','_') + '/' + str(index) + '.png')
+    
+    if index in randomlist:
+        im_crop.save('data/validation/' + (row['JIS Typical Reading']).replace('.','_') + '/' + str(index) + '.png')
+    else:
+        im_crop.save('data/training/' + (row['JIS Typical Reading']).replace('.','_') + '/' + str(index) + '.png')
+    
+    if index > 0 and index % 160 == 0:
+        randomlist += 160
     
     if index >= 2000 and index % 2000 == 0:
         print(index)

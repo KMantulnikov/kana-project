@@ -130,7 +130,7 @@ dmypy.json
 
 /ETL8B
 /ETL1
-/source
+/data
 test_read.py
 *.dat
 unpack.py
