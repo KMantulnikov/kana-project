@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 
 meta_data = pd.read_csv('./ETL8B/ETL8B2C1.csv')
 meta_data = meta_data[:12000]
-# a_hira = meta_data[meta_data['JIS Typical Reading'] == 'A.HI']
+a_hira = meta_data[meta_data['JIS Typical Reading'] == 'TSU.']
 
 images = {
             'im_00': Image.open('./ETL8B/ETL8B2C1_00.png'),
@@ -61,7 +61,7 @@ plt.scatter(meta_data['x_1'],meta_data['y_1'])
 #     else:
 #         print('Directory already exists.')
 
-for name in np.unique(meta_data['JIS Typical Reading']):
+for name in np.unique(meta_data['JIS Kanji Code']):
     name = name.replace('.','_')
     target_path_training = os.path.join('data/training/' + name)
     target_path_validation = os.path.join('data/validation/' + name)
@@ -87,14 +87,14 @@ for index, row in meta_data.iterrows():
     im_crop = im.crop((row['x_0'], row['y_0'], row['x_1'], row['y_1']))
     
     if index in randomlist:
-        im_crop.save('data/validation/' + (row['JIS Typical Reading']).replace('.','_') + '/' + str(index) + '.png')
+        im_crop.save('data/validation/' + (row['JIS Kanji Code']).replace('.','_') + '/' + str(index) + '.png')
     else:
-        im_crop.save('data/training/' + (row['JIS Typical Reading']).replace('.','_') + '/' + str(index) + '.png')
+        im_crop.save('data/training/' + (row['JIS Kanji Code']).replace('.','_') + '/' + str(index) + '.png')
     
     if index > 0 and index % 160 == 0:
         randomlist += 160
     
-    if index >= 2000 and index % 2000 == 0:
+    if (index + 1) >= 2000 and (index + 1) % 2000 == 0:
         print(index)
         n += 1
         print('Changing sheet to 0{0}'.format(n))
