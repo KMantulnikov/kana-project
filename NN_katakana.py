@@ -55,28 +55,39 @@ def get_model():
     # model.add(Input((X_training.shape[1:])))
     
     model.add(Conv2D(64, (3,3), input_shape = X_train.shape[1:], padding = 'same', kernel_initializer = kernel_initializer))
-    # model.add(BatchNormalization())
+    model.add(Activation('relu'))
+    model.add(Dropout(0.5))
+    model.add(Conv2D(64, (3,3), input_shape = X_train.shape[1:], padding = 'same', kernel_initializer = kernel_initializer))
     model.add(Activation('relu'))
     model.add(Dropout(0.5))
     model.add(MaxPooling2D(pool_size=(2, 2), strides = 2, padding = 'same'))
     
     
     model.add(Conv2D(128, (3,3), padding = 'same', kernel_initializer = kernel_initializer))
-    # model.add(BatchNormalization())
     model.add(Activation('relu'))
     model.add(Dropout(0.5))
-    model.add(MaxPooling2D(pool_size=(2, 2), strides = 2, padding = 'same'))
-    
-    
-    model.add(Conv2D(192, (3,3), padding = 'same', kernel_initializer = kernel_initializer))
-    # model.add(BatchNormalization())
+    model.add(Conv2D(128, (3,3), padding = 'same', kernel_initializer = kernel_initializer))
     model.add(Activation('relu'))
     model.add(Dropout(0.5))
     model.add(MaxPooling2D(pool_size=(2, 2), strides = 2, padding = 'same'))
     
     
     model.add(Conv2D(256, (3,3), padding = 'same', kernel_initializer = kernel_initializer))
-    # model.add(BatchNormalization())
+    model.add(Activation('relu'))
+    model.add(Dropout(0.5))
+    model.add(Conv2D(256, (3,3), padding = 'same', kernel_initializer = kernel_initializer))
+    model.add(Activation('relu'))
+    model.add(Dropout(0.5))
+    model.add(MaxPooling2D(pool_size=(2, 2), strides = 2, padding = 'same'))
+    
+    
+    model.add(Conv2D(512, (3,3), padding = 'same', kernel_initializer = kernel_initializer))
+    model.add(Activation('relu'))
+    model.add(Dropout(0.5))
+    model.add(Conv2D(512, (3,3), padding = 'same', kernel_initializer = kernel_initializer))
+    model.add(Activation('relu'))
+    model.add(Dropout(0.5))
+    model.add(Conv2D(512, (3,3), padding = 'same', kernel_initializer = kernel_initializer))
     model.add(Activation('relu'))
     model.add(Dropout(0.5))
     model.add(MaxPooling2D(pool_size=(2, 2), strides = 2, padding = 'same'))
@@ -84,20 +95,17 @@ def get_model():
     
     model.add(Flatten())
     
-    model.add(Dense(1024, kernel_initializer = kernel_initializer))
-    # model.add(BatchNormalization())
+    model.add(Dense(4096, kernel_initializer = kernel_initializer))
     model.add(Activation('relu'))
     model.add(Dropout(0.5))
     
-    model.add(Dense(1024, kernel_initializer = kernel_initializer))
-    # model.add(BatchNormalization())
+    model.add(Dense(4096, kernel_initializer = kernel_initializer))
     model.add(Activation('relu'))
     
     model.add(Dense(75, activation = 'softmax', kernel_initializer = kernel_initializer))
     
     loss_function = CategoricalCrossentropy()
     optimizer = Adam()
-    # tf.keras.metrics.CategoricalAccuracy()
     
     # Compile model
     model.compile(loss=loss_function, optimizer=optimizer, metrics=['accuracy'])

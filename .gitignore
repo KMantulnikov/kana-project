@@ -136,3 +136,8 @@ test_read.py
 unpack.py
 /katakana
 /hiragana
+/models/
+*.png
+trainHistoryDict
+*.h5
+*.csv
