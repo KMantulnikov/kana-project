@@ -20,11 +20,11 @@ from tensorflow.keras.utils import to_categorical
 from tensorflow.keras.callbacks import LearningRateScheduler, EarlyStopping
 
 # loading dataset
-examples_data = h5py.File('data.h5', 'r')
-X_0 = np.array(examples_data.get('X_training'))*1.0
-X_0 = np.swapaxes(X_0, 1, 2)  
-X_test = np.array(examples_data.get('X_validation'))*1.0
-X_test = np.swapaxes(X_test, 1, 2)
+examples_data = h5py.File('data_23022021.h5', 'r')
+X_0 = np.array(examples_data.get('X_training'))
+# X_0 = np.swapaxes(X_0, 1, 2)  
+X_test = np.array(examples_data.get('X_validation'))
+# X_test = np.swapaxes(X_test, 1, 2)
 Y_0 = np.array(examples_data.get('Y_training'))
 Y_test = np.array(examples_data.get('Y_validation'))
 examples_data.close()

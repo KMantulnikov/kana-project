@@ -106,16 +106,16 @@ for index, row in meta_data.iterrows():
         im_crop_array = np.asarray(im_crop)
         im_crop_array = np.expand_dims(im_crop_array, axis = 0)
         # np.append(X_training, im_crop_array, axis = 0)
-        X_validation.append(im_crop_array) 
+        X_validation.append(im_crop_array*1) 
         Y_validation.append(cur_label['label'])
         # im_crop_bw.save('data/validation/' + (row['JIS Kanji Code']).replace('.','_') + '/' + str(index) + '.tif')
     else:
         cur_label = labels[labels[0] == row['JIS Kanji Code']]
-        im_crop_bw = im_crop.convert('L')
+        # im_crop_bw = im_crop.convert('L')
         im_crop_array = np.asarray(im_crop)
         im_crop_array = np.expand_dims(im_crop_array, axis = 0)
         # np.append(X_training, im_crop_array, axis = 0)
-        X_training.append(im_crop_array) 
+        X_training.append(im_crop_array*1) 
         Y_training.append(cur_label['label'])
         # print(im_crop_array.shape)
         # # im_crop_bw = im_crop.convert('L')
@@ -133,16 +133,21 @@ for index, row in meta_data.iterrows():
 
 X_training = np.array(X_training)
 X_training = np.swapaxes(X_training,1,3)
+X_training = np.swapaxes(X_training,1,2)
 X_validation = np.array(X_validation)
 X_validation = np.swapaxes(X_validation,1,3)
+X_validation = np.swapaxes(X_validation,1,2)
 Y_training = np.array(Y_training)
 Y_validation = np.array(Y_validation)
 
-ex_file = h5py.File('data.h5', 'w')
+ex_file = h5py.File('data_23022021.h5', 'w')
 ex_file.create_dataset('X_training', data=X_training)
 ex_file.create_dataset('X_validation', data=X_validation)
 ex_file.create_dataset('Y_training', data=Y_training)
 ex_file.create_dataset('Y_validation', data=Y_validation)
 ex_file.close()
 
-# labels.to_csv('labels.csv')
+labels.to_csv('labels_23022021.csv')
+
+# plt.figure()
+# plt.imshow(X_validation[-2])

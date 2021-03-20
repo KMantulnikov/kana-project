@@ -174,10 +174,10 @@ history = model.fit(train_generator,\
 
 # serialize model to JSON
 model_json = model.to_json()
-with open("models/model_20022021_uniform_augument1.json", "w") as json_file:
+with open("models/M12_hi_21022021_uniform_augument1.json", "w") as json_file:
     json_file.write(model_json)
 # serialize weights to HDF5
-model.save_weights("models/model_weights_20022021_uniform_augument1.h5")
+model.save_weights("models/M12_hi_weights_21022021_uniform_augument1.h5")
 print("Saved model to disk")    
  
 model.evaluate(X_test, Y_test_hot, batch_size=16, verbose=1)    
